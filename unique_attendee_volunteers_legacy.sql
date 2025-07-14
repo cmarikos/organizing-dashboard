@@ -6,6 +6,7 @@ WITH main_query AS (
       , 'event_attendee' as role
     FROM `proj-tmc-mem-mvp.everyaction_enhanced.enh_everyaction__events` 
     WHERE start_date > '2024-12-31'
+      AND status = 'Completed'
   )
 
 
@@ -26,6 +27,7 @@ WITH main_query AS (
     ON e.vanid = c.vanid
 
   WHERE e.start_date > '2024-12-31'
+    AND status = 'Completed'
 
   GROUP BY 1, 2, 3, 4
 )
