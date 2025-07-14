@@ -1,3 +1,4 @@
+CREATE OR REPLACE VIEW `prod-organize-arizon-4e1c0a83.organizing_view.hotlist_metrics` AS (
 WITH volunteer_leaders AS(
   SELECT DISTINCT
     ac.vanid
@@ -47,3 +48,4 @@ LEFT JOIN phone_conversations AS p
 
 LEFT JOIN one_on_ones AS o
   ON v.vanid = o.vanid
+)
