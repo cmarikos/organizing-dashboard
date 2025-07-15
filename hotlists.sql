@@ -4,6 +4,7 @@ WITH volunteer_leaders AS(
     ac.vanid
     , c.first_name||" "||c.last_name AS full_name
     , ac.activistcodename
+    , EXTRACT(MONTH FROM ac.utc_datecreated) AS month
   FROM `proj-tmc-mem-mvp.everyaction_enhanced.enh_everyaction__activist_codes` AS ac
 
   LEFT JOIN `proj-tmc-mem-mvp.everyaction_enhanced.enh_everyaction__contacts` AS c
@@ -39,6 +40,7 @@ CASE
   ELSE NULL
 END AS Organizer
 , v.full_name
+, v.month
 , p.phone_conversations
 , o.one_on_ones
 FROM volunteer_leaders AS v
