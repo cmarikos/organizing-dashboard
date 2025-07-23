@@ -1,12 +1,12 @@
 CREATE OR REPLACE VIEW `prod-organize-arizon-4e1c0a83.organizing_view.organizing_event_attendees` AS (
   WITH event_attendees AS (
-    SELECT DISTINCT
+    SELECT 
     e.event_name||e.start_date as event_id
     , e.role
     , COUNT(e.role) as role_count
     FROM `proj-tmc-mem-mvp.everyaction_enhanced.enh_everyaction__events` AS e
+    WHERE e.start_date > '2024-12-31'
     GROUP BY 1,2
-    ORDER BY 1
   )
   SELECT DISTINCT
     
