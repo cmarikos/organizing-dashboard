@@ -34,9 +34,9 @@ one_on_ones AS(
 
 SELECT
 CASE
-    WHEN v.activistcodename = 'Tara Hotlist' THEN 'Tara'
-    WHEN v.activistcodename = 'Jhanitzel Hotlist' THEN 'Jhanitzel'
-    WHEN v.activistcodename = 'Lily Hotlist' THEN 'Lily'
+    WHEN v.activistcodename = 'Tara Hotlist' THEN 'Tara Clayton'
+    WHEN v.activistcodename = 'Jhanitzel Hotlist' THEN 'Jhanitzel Bogarin'
+    WHEN v.activistcodename = 'Lily Hotlist' THEN 'Lily Hernandez'
   ELSE NULL
 END AS Organizer
 , v.full_name
