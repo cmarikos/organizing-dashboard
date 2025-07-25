@@ -15,8 +15,8 @@ WITH main_query AS (
     , c.phone_number
     , e.vanid
     ,a.role
-    , STRING_AGG(CAST(e.event_name AS STRING),', ') as agg_events
-    , ARRAY_LENGTH(SPLIT(STRING_AGG(CAST(e.event_name AS STRING), ', '), ', ')) AS event_count
+    , STRING_AGG(DISTINCT CAST(e.event_name AS STRING), ', ') AS agg_events         
+    , ARRAY_LENGTH(ARRAY_AGG(DISTINCT e.event_name)) AS event_count  
 
   FROM `proj-tmc-mem-mvp.everyaction_enhanced.enh_everyaction__events`  AS e
 
