@@ -1,4 +1,3 @@
-CREATE OR REPLACE VIEW `prod-organize-arizon-4e1c0a83.organizing_view.unique_attendee_volunteers` AS (
 WITH main_query AS (
   WITH unique_attendees AS (
     SELECT DISTINCT
@@ -35,6 +34,7 @@ WITH main_query AS (
 )
 
 SELECT 
+  CAST(c.utc_datecreated AS DATE) date_of_first_engagement,
   m.full_name,
   m.vanid,
   CASE WHEN m.role IS NULL THEN "" ELSE m.role END AS is_volunteer,
@@ -47,4 +47,7 @@ SELECT
     WHERE oe.event_name IN UNNEST(SPLIT(m.agg_events, ', '))
   ) AS agg_organizers
 FROM main_query AS m
-)
+LEFT JOIN `proj-tmc-mem-mvp.everyaction_enhanced.enh_everyaction__contacts` AS c
+  ON m.vanid = c.vanid
+
+ORDER BY 1 ASC
