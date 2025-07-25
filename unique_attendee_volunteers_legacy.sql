@@ -1,3 +1,4 @@
+CREATE OR REPLACE VIEW `prod-organize-arizon-4e1c0a83.organizing_view.unique_attendee_volunteers` AS (
 WITH main_query AS (
   WITH unique_attendees AS (
     SELECT DISTINCT
@@ -51,3 +52,4 @@ LEFT JOIN `proj-tmc-mem-mvp.everyaction_enhanced.enh_everyaction__contacts` AS c
   ON m.vanid = c.vanid
 
 ORDER BY 1 ASC
+)
