@@ -7,6 +7,7 @@ WITH main_query AS (
     FROM `proj-tmc-mem-mvp.everyaction_enhanced.enh_everyaction__events` 
     WHERE start_date > '2024-12-31'
       AND status = 'Completed'
+      AND current_status = 1
   )
 
 
