@@ -32,17 +32,17 @@ These queries transform raw data into a format suitable for reporting and visual
 
 ## Google Cloud / BigQuery Information
 
-This dashboard heavily leverages Google BigQuery for data warehousing and analytics.
+This dashboard leverages EveryAction data in Google BigQuery along with connected sheets manually updated and imported
 
-*   **Project ID**: `prod-organize-arizon-4e1c0a83`
-*   **Dataset(s)**: Data is drawn from various datasets, including `everyaction_enhanced` and `organizing_view`.
+*   **Project ID**: `prod-organize-arizon-4e1c0a83` & `proj-tmc-mem-mvp`
+*   **Dataset(s)**: Data is drawn from `everyaction_enhanced` (everyaction synced data source) and `organizing_view` (a behemoth of a connected sheet that needs to be broken up more)
 *   **Cost Considerations**: Some of the queries used for this dashboard can process around 9.7 GB per run.
 
 ## Setup and Usage
 
 ### Prerequisites
 
-*   Access to the Google Cloud Project `prod-organize-arizon-4e1c0a83`.
+*   Access to the Google Cloud Project `prod-organize-arizon-4e1c0a83` & `proj-tmc-mem-mvp`
 *     You'd replace this with your project name and adapt queries to your datasets and projects if you were going to fork this repo
 *   Permissions to query tables and views within the relevant BigQuery datasets.
 *   Any datasets within `the proj-tmc-mem-mvp.` project are TMC syncs, and tables should be standardized across TMC users. If you are a CTA user, or use another engineering partner your data structure will likely look really different
