@@ -19,7 +19,7 @@ The core logic of the dashboard is driven by BigQuery SQL queries. Some key quer
 
 *   `hotlists_append.sql`
 *   `hotlists.sql`
-*     ^ these two are on thin ice as we re-work how our organizers understand their core volunteers
+*        these two queries above are on thin ice as we re-work how our organizers understand their core volunteers
 *   `organizing_event_attendees_legacy.sql`
 *   `organizing_goals_legacy.sql`
 *   `unique_attendee_volunteers`
