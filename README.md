@@ -36,7 +36,7 @@ This dashboard heavily leverages Google BigQuery for data warehousing and analyt
 
 *   **Project ID**: `prod-organize-arizon-4e1c0a83`
 *   **Dataset(s)**: Data is drawn from various datasets, including `everyaction_enhanced` and `organizing_view`.
-*   **Cost Considerations**: Be aware that running queries in BigQuery incurs costs based on the amount of data processed. For instance, some of the queries used for this dashboard can process around 9.7 GB per run.
+*   **Cost Considerations**: Some of the queries used for this dashboard can process around 9.7 GB per run.
 
 ## Setup and Usage
 
