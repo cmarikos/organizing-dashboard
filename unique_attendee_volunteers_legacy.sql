@@ -37,6 +37,8 @@ WITH main_query AS (
 SELECT 
   CAST(c.utc_datecreated AS DATE) date_of_first_engagement,
   m.full_name,
+  c.phone_number,
+  c.email_address,
   m.vanid,
   CASE WHEN m.role IS NULL THEN "" ELSE m.role END AS is_volunteer,
   m.agg_events,
@@ -46,6 +48,7 @@ SELECT
     SELECT STRING_AGG(DISTINCT oe.organizer, ', ')
     FROM `prod-organize-arizon-4e1c0a83.organizing_view.organizing_user_events` AS oe
     WHERE oe.event_name IN UNNEST(SPLIT(m.agg_events, ', '))
+    AND oe.organizer IN ('Tara Clayton', 'Jhanitzel Bogarin', 'Leny Rivera')
   ) AS agg_organizers
 FROM main_query AS m
 LEFT JOIN `proj-tmc-mem-mvp.everyaction_enhanced.enh_everyaction__contacts` AS c
