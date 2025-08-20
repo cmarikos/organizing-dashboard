@@ -5,6 +5,8 @@ CREATE OR REPLACE VIEW `prod-organize-arizon-4e1c0a83.organizing_view.organizing
     , e.role
     , COUNT(e.role) as role_count
     FROM `proj-tmc-mem-mvp.everyaction_enhanced.enh_everyaction__events` AS e
+
+    WHERE e.status = 'Completed'
     GROUP BY 1,2
     ORDER BY 1
   )
