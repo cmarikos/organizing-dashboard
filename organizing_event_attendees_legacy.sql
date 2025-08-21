@@ -1,35 +1,57 @@
+-- updated to align with scheduled query 08/21/2025
+
 CREATE OR REPLACE VIEW `prod-organize-arizon-4e1c0a83.organizing_view.organizing_event_attendees` AS (
-  WITH event_attendees AS (
-    SELECT DISTINCT
-    e.event_name||e.start_date as event_id
-    , e.role
-    , COUNT(e.role) as role_count
-    FROM `proj-tmc-mem-mvp.everyaction_enhanced.enh_everyaction__events` AS e
-    GROUP BY 1,2
-    ORDER BY 1
-  )
-  SELECT DISTINCT
+WITH event_attendees AS (
+SELECT 
+eventid
+, event_name
+, start_date
+, COUNT(vanid) AS attendees
+FROM
+(SELECT DISTINCT
+e.eventid
+, e.start_date
+, e.event_name
+, e.vanid
+, e.role
+, e.final_status
+FROM `proj-tmc-mem-mvp.everyaction_enhanced.enh_everyaction__events` AS e
+
+WHERE e.final_status = 'Completed'
+AND e.start_date > '2024-12-31'
+)
+
+GROUP BY 1,2,3
+ORDER BY 3 ASC
+
+)
+
+SELECT DISTINCT
     
     ou.event_name
+    , ae.eventid
     , ou.start_date
-    , EXTRACT(MONTH FROM ou.start_date) AS month
     , ou.organizer
-    , CASE
-        WHEN ou.organizer = 'Elyanna Juarez' THEN 'Pinal'
-        WHEN ou.organizer = 'Hector Castellanos' THEN 'Pinal'
-        WHEN ou.organizer = 'Tara Clayton' THEN 'Cochise'
-        WHEN ou.organizer = 'Jhanitzel Bogarin' THEN 'Yuma'
-        WHEN ou.organizer IS NULL THEN 'Virtual'
-        ELSE NULL
-      END AS event_location
-    , ae.role
-    , ae.role_count
+    , c.codename as event_location
+    , ou.event_location_city
+    , ae.attendees
+  
 
   FROM `prod-organize-arizon-4e1c0a83.organizing_view.organizing_user_events` AS ou
 
   LEFT JOIN event_attendees AS ae
-    on ou.event_name||ou.start_date = ae.event_id
+    ON (ou.event_name = ae.event_name AND ou.start_date = ae.start_date)
+  
+  LEFT JOIN `proj-tmc-mem-mvp.everyaction_cleaned.cln_everyaction__eventscodes` AS ec
+    ON ae.eventid = ec.eventid
+
+  LEFT JOIN `proj-tmc-mem-mvp.everyaction_cleaned.cln_everyaction__codes` AS c
+    ON ec.codeid = c.codeid
+
+  
 
   WHERE ou.start_date > '2024-12-31'
   AND ou.program LIKE '%Organizing%'
+  AND c.codename LIKE '%County'
+  OR c.codename = 'Virtual'
 )
