@@ -23,13 +23,13 @@ SELECT
 FROM `{{project_id}}.{{dataset}}.raw_events`
 WHERE status = 'Completed'
 GROUP BY 1, 2;
-
+```
 Usage Notes
 
 These examples are designed for columnar data warehouses (e.g., BigQuery, Snowflake, Redshift).
 
 Replace {{project_id}}, {{dataset}}, and {{table}} with your own values.
-```
+
 Queries are written to be modular and human-readable for team dashboards.
 
 #### Scheduling
