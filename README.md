@@ -1,65 +1,53 @@
-# Organizing Dashboard
+### Organizing Dashboard SQL
 
-This repository contains the BigQuery SQL queries and potentially other assets related to the "Organizing Dashboard" used for tracking and analyzing organizing efforts.
+This repository contains example SQL queries used to power internal dashboards. The code is provided as a reference for query structure, data transformations, and scheduling patterns—not for direct execution without modification.
 
-## Overview
+#### Project Overview
 
-The Organizing Dashboard provides key insights into our organizing activities, primarily by aggregating and analyzing event and contact data. It helps us monitor engagement, track event participation, and understand the effectiveness of our outreach. The oututs of this project produces a live Looker Studio dashboard (which will remain for internal use only)
+These queries demonstrate:
 
-## Data Sources
+Building views for reporting and QA
 
-The dashboard relies on data primarily sourced from:
+Scheduling queries to update derived tables
 
-*   **`proj-tmc-mem-mvp.everyaction_enhanced.enh_everyaction__contacts`**: This table likely contains contact information and details from our EveryAction system.
-*   **`prod-organize-arizon-4e1c0a83.organizing_view.organizing_user_events`**: This view seems to hold details about events and user participation.
+Organizing transformations for visualization dashboards
 
-## Key Queries
+Note: All project IDs, dataset names, and table names in this repo are placeholders. Replace them with your own environment’s identifiers before running.
+``` SQL
+Example Query Pattern
+CREATE OR REPLACE VIEW `{{project_id}}.{{dataset}}.example_view` AS
+SELECT
+  id,
+  event_name,
+  COUNT(*) AS total
+FROM `{{project_id}}.{{dataset}}.raw_events`
+WHERE status = 'Completed'
+GROUP BY 1, 2;
+```
+Usage Notes
 
-The core logic of the dashboard is driven by BigQuery SQL queries. Some key queries found in this project include:
+These examples are designed for columnar data warehouses (e.g., BigQuery, Snowflake, Redshift).
 
-*   `hotlists_append.sql`
-*   `hotlists.sql`
-* these two queries above are on thin ice as we re-work how our organizers understand their core volunteers
-*   `organizing_event_attendees_legacy.sql`
-*   `organizing_goals_legacy.sql`
-*   `unique_attendee_volunteers`
+Replace {{project_id}}, {{dataset}}, and {{table}} with your own values.
 
-These queries transform raw data into a format suitable for reporting and visualization. For example, some queries calculate:
+Queries are written to be modular and human-readable for team dashboards.
 
-*   Date of first engagement
-*   Volunteer status and event counts
-*   Aggregated event lists and organizers
+#### Scheduling
 
-## Google Cloud / BigQuery Information
+Queries can be scheduled to run periodically (e.g., hourly, daily, weekly) depending on your data refresh needs. Costs will vary based on your dataset size—monitor usage within your own billing environment.
 
-This dashboard leverages EveryAction data in Google BigQuery along with connected sheets manually updated and imported
+#### Contact
 
-*   **Project ID**: `prod-organize-arizon-4e1c0a83` & `proj-tmc-mem-mvp`
-*   **Dataset(s)**: Data is drawn from `everyaction_enhanced` (everyaction synced data source) and `organizing_view` (a behemoth of a connected sheet that needs to be broken up more)
-*   **Cost Considerations**: Some of the queries used for this dashboard can process around 9.7 GB per run.
+For issues, please open a GitHub Issue in this repository.
 
-## Setup and Usage
+#### Contributing
 
-### Prerequisites
+Contributions are welcome! When submitting changes:
 
-*   Access to the Google Cloud Project `prod-organize-arizon-4e1c0a83` & `proj-tmc-mem-mvp`
-*     You'd replace this with your project name and adapt queries to your datasets and projects if you were going to fork this repo
-*   Permissions to query tables and views within the relevant BigQuery datasets.
-*   Any datasets within `the proj-tmc-mem-mvp.` project are TMC syncs, and tables should be standardized across TMC users. If you are a CTA user, or use another engineering partner your data structure will likely look really different
+Parameterize any project- or org-specific values.
 
+Ensure queries are generic and runnable by others with placeholder replacements.
 
-### Data Refresh
+#### License
 
-*   I have these queries scheduled to run hourly, as well as the connected sheets that are pulled into this project
-
-## Dashboard Visualization
-
-*   The dashboard is built out in Looker studio and will remain internal (I am happy to show you on request and answer questions on the source data, I just don't want it published publicly here)
-
-## Contributing
-
-*   There is some real spaghetti code in here as a result of these queries being worked and re-worked over the course of the year. If you notice any improvements or issues please feel free to contribute
-
-## Contact
-
-For questions or support, please contact christina@ruralazaction.org
+This repository is open-sourced under the MIT License
