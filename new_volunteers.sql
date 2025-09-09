@@ -44,7 +44,7 @@ ORDER BY 3
 SELECT
 a.vanid
 , a.organizer
-, a.first_month AS fist_event
+, a.first_month AS first_event
 , v.first_month AS first_vol
 FROM attendees AS a
 
