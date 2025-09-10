@@ -33,9 +33,9 @@ LEFT JOIN `proj-tmc-mem-mvp.everyaction_cleaned.cln_everyaction__eventscodes` AS
 LEFT JOIN `proj-tmc-mem-mvp.everyaction_cleaned.cln_everyaction__codes` AS c
   ON ec.codeid = c.codeid
 
-WHERE e.role = 'Attendee'
+WHERE (e.role = 'Attendee' OR e.role = 'Volunteer')
 and e.final_status = 'Completed'
-AND c.codename IN ('Jhanitzel Bogarin','Leny Rivera','Tara Clayton','Hector Castellanos','Elyanna Juarez')
+AND c.codename IN ('Jhanitzel Bogarin','Lily Hernandez','Tara Clayton','Hector Castellanos','Elyanna Juarez')
 
 GROUP BY 1,2
 ORDER BY 3

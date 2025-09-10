@@ -14,6 +14,7 @@ LEFT JOIN `proj-tmc-mem-mvp.everyaction_cleaned.cln_everyaction__codes` AS c
   ON ec.codeid = c.codeid
 
 WHERE e.final_status = 'Completed'
+AND c.codename = 'Organizing'
 
 GROUP BY 1,2,3
 )
@@ -34,10 +35,10 @@ LEFT JOIN `proj-tmc-mem-mvp.everyaction_cleaned.cln_everyaction__codes` AS c
 
 WHERE e.role = 'Volunteer'
 AND e.final_status = 'Completed'
+AND c.codename = 'Organizing'
 
 GROUP BY 1,2,3
 )
-
 , county AS(
 SELECT
 e.eventid
@@ -66,10 +67,10 @@ LEFT JOIN `proj-tmc-mem-mvp.everyaction_cleaned.cln_everyaction__eventscodes` AS
 LEFT JOIN `proj-tmc-mem-mvp.everyaction_cleaned.cln_everyaction__codes` AS c
   ON ec.codeid = c.codeid
 
-WHERE c.codename IN ('Jhanitzel Bogarin','Leny Rivera','Tara Clayton','Hector Castellanos','Elyanna Juarez')
+WHERE c.codename IN ('Jhanitzel Bogarin','Lily Hernandez','Tara Clayton','Hector Castellanos','Elyanna Juarez')
 )
 
-SELECT
+SELECT DISTINCT
 a.*
 , COALESCE(v.volunteers, 0) AS volunteers
 , c.county
@@ -84,4 +85,6 @@ LEFT JOIN county AS c
 
 LEFT JOIN organizer AS o
   ON a.eventid = o.eventid
+
+WHERE a.start_date > '2024-12-31'
 )
