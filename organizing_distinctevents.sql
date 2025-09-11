@@ -19,7 +19,8 @@ LEFT JOIN `proj-tmc-mem-mvp.everyaction_cleaned.cln_everyaction__codes` AS c
 WHERE
 
 EXTRACT(YEAR FROM start_date) = 2025
-  AND c.codename = 'Organizing'
+  AND (c.codename = 'Organizing' 
+    OR c.codename = 'EJ')
 ORDER BY
   start_date
 )

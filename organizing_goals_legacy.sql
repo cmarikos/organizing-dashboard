@@ -68,7 +68,7 @@ ON
   pm.organizer_user = vm.organizer_user
  AND pm.month         = vm.month
 
-WHERE pm.organizer_user IN ('Elyanna Juarez', 'Hector Castellanos','Jhanitzel Bogarin','Tara Clayton')
+WHERE pm.organizer_user IN ('Elyanna Juarez', 'Hector Castellanos','Jhanitzel Bogarin','Tara Clayton','Julie Fernatt')
 ORDER BY
   pm.organizer_user,
   pm.month

@@ -1,37 +1,90 @@
 CREATE OR REPLACE VIEW `prod-organize-arizon-4e1c0a83.organizing_view.organizing_event_attendees` AS (
-  WITH event_attendees AS (
-    SELECT DISTINCT
-    e.event_name||e.start_date as event_id
-    , e.role
-    , COUNT(e.role) as role_count
-    FROM `proj-tmc-mem-mvp.everyaction_enhanced.enh_everyaction__events` AS e
+WITH attendees AS(
+SELECT
+e.eventid
+, e.event_name
+, e.start_date
+, COUNT(DISTINCT e.vanid) AS attendees
+FROM `proj-tmc-mem-mvp.everyaction_enhanced.enh_everyaction__events` AS e
 
-    WHERE e.status = 'Completed'
-    GROUP BY 1,2
-    ORDER BY 1
-  )
-  SELECT DISTINCT
-    
-    ou.event_name
-    , ou.start_date
-    , EXTRACT(MONTH FROM ou.start_date) AS month
-    , ou.organizer
-    , CASE
-        WHEN ou.organizer = 'Elyanna Juarez' THEN 'Pinal'
-        WHEN ou.organizer = 'Hector Castellanos' THEN 'Pinal'
-        WHEN ou.organizer = 'Tara Clayton' THEN 'Cochise'
-        WHEN ou.organizer = 'Jhanitzel Bogarin' THEN 'Yuma'
-        WHEN ou.organizer IS NULL THEN 'Virtual'
-        ELSE NULL
-      END AS event_location
-    , ae.role
-    , ae.role_count
+LEFT JOIN `proj-tmc-mem-mvp.everyaction_cleaned.cln_everyaction__eventscodes` AS ec
+  ON e.eventid = ec.eventid 
 
-  FROM `prod-organize-arizon-4e1c0a83.organizing_view.organizing_user_events` AS ou
+LEFT JOIN `proj-tmc-mem-mvp.everyaction_cleaned.cln_everyaction__codes` AS c
+  ON ec.codeid = c.codeid
 
-  LEFT JOIN event_attendees AS ae
-    on ou.event_name||ou.start_date = ae.event_id
+WHERE e.final_status = 'Completed'
+AND c.codename = 'Organizing'
 
-  WHERE ou.start_date > '2024-12-31'
-  AND ou.program LIKE '%Organizing%'
+GROUP BY 1,2,3
+)
+
+, volunteers AS(
+SELECT
+e.eventid
+, e.event_name
+, e.start_date
+, COUNT(DISTINCT e.vanid) AS volunteers
+FROM `proj-tmc-mem-mvp.everyaction_enhanced.enh_everyaction__events` AS e
+
+LEFT JOIN `proj-tmc-mem-mvp.everyaction_cleaned.cln_everyaction__eventscodes` AS ec
+  ON e.eventid = ec.eventid 
+
+LEFT JOIN `proj-tmc-mem-mvp.everyaction_cleaned.cln_everyaction__codes` AS c
+  ON ec.codeid = c.codeid
+
+WHERE e.role = 'Volunteer'
+AND e.final_status = 'Completed'
+AND c.codename = 'Organizing'
+
+GROUP BY 1,2,3
+)
+, county AS(
+SELECT
+e.eventid
+, c.codename as county
+FROM `proj-tmc-mem-mvp.everyaction_enhanced.enh_everyaction__events` AS e
+
+LEFT JOIN `proj-tmc-mem-mvp.everyaction_cleaned.cln_everyaction__eventscodes` AS ec
+  ON e.eventid = ec.eventid 
+
+LEFT JOIN `proj-tmc-mem-mvp.everyaction_cleaned.cln_everyaction__codes` AS c
+  ON ec.codeid = c.codeid
+
+WHERE c.codename LIKE '%County'
+  OR c.codename = 'Virtual'
+)
+
+, organizer AS(
+SELECT
+e.eventid
+, c.codename as organizer
+FROM `proj-tmc-mem-mvp.everyaction_enhanced.enh_everyaction__events` AS e
+
+LEFT JOIN `proj-tmc-mem-mvp.everyaction_cleaned.cln_everyaction__eventscodes` AS ec
+  ON e.eventid = ec.eventid 
+
+LEFT JOIN `proj-tmc-mem-mvp.everyaction_cleaned.cln_everyaction__codes` AS c
+  ON ec.codeid = c.codeid
+
+WHERE c.codename IN ('Jhanitzel Bogarin','Lily Hernandez','Tara Clayton','Hector Castellanos','Elyanna Juarez')
+)
+
+SELECT DISTINCT
+a.*
+, COALESCE(v.volunteers, 0) AS volunteers
+, c.county
+, o.organizer
+FROM attendees AS a
+
+LEFT JOIN volunteers AS v
+  ON a.eventid = v.eventid
+
+LEFT JOIN county AS c
+  ON a.eventid = c.eventid
+
+LEFT JOIN organizer AS o
+  ON a.eventid = o.eventid
+
+WHERE a.start_date > '2024-12-31'
 )
